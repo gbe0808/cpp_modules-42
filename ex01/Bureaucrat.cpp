@@ -48,12 +48,12 @@ void Bureaucrat::decrementGrade()
 
 const char* Bureaucrat::GradeTooHighException::what() const throw()
 {
-    return "Grade is too high\n";
+    return "Bureaucrat's grade is too high\n";
 }
 
 const char* Bureaucrat::GradeTooLowException::what() const throw()
 {
-    return "Grade is too low\n";
+    return "Bureaucrat's grade is too low\n";
 }
 
 void Bureaucrat::signForm(Form &form)
@@ -62,9 +62,9 @@ void Bureaucrat::signForm(Form &form)
         form.beSigned(*this);
         cout << _name << " signed " << form.getName() << ".\n";
     } catch (const Form::AlreadySignedException &e) {
-        cout << _name << " couldn't sign " << form.getName() << " because it is already signed.\n";
+        cerr << _name << " couldn't sign " << form.getName() << " because it is already signed.\n";
     } catch (const Form::GradeTooLowException &e) {
-        cout << _name << " couldn't sign " << form.getName() << " because the grade is too low.\n";
+        cerr << _name << " couldn't sign " << form.getName() << " because the grade is too low.\n";
     }
 }
 

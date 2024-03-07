@@ -17,7 +17,7 @@ int main()
         Form f8("form8", 151, 50);
         Form f9("form9", 151, 151);
     } catch (std::exception &e) {
-        cout << e.what() << '\n';
+        cerr << e.what() << '\n';
     }
 
     cout << "--------------------------------------------\n\n";
@@ -38,7 +38,7 @@ int main()
         jnho.signForm(cleanser2);
 
     } catch (std::exception &e) {
-        cout << e.what() << '\n';
+        cerr << e.what() << '\n';
     }
 
     return 0;

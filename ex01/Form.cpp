@@ -41,8 +41,7 @@ short Form::getGradeToExec() const
 
 void Form::beSigned(Bureaucrat &bureaucrat)
 {
-    const short grade = bureaucrat.getGrade();
-    if (grade > _grade_to_sign)
+    if (bureaucrat.getGrade() > _grade_to_sign)
         throw GradeTooLowException();
     if (_is_signed)
         throw AlreadySignedException();

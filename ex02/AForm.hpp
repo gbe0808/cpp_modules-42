@@ -14,8 +14,10 @@ private:
     bool _is_signed;
     const short _grade_to_sign;
     const short _grade_to_exec;
-    AForm();
     AForm &operator=(const AForm &ref);
+
+protected:
+    AForm();
 
 public:
     AForm(const string &name, const short grade_to_sign, const short grade_to_exec);

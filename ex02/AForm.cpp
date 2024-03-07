@@ -1,6 +1,8 @@
 #include <iostream>
 #include "AForm.hpp"
 
+AForm::AForm() : _name(""), _is_signed(false), _grade_to_sign(0), _grade_to_exec(0) {}
+
 AForm::AForm(const string& name, const short grade_to_sign, const short grade_to_exec) : _name(name), _is_signed(false), _grade_to_sign(grade_to_sign), _grade_to_exec(grade_to_exec)
 {
     if (grade_to_sign < 1 || grade_to_exec < 1)
@@ -51,17 +53,17 @@ void AForm::beSigned(Bureaucrat &bureaucrat)
 
 const char* AForm::AlreadySignedException::what() const throw()
 {
-    return "AForm is already signed\n";
+    return "Form is already signed\n";
 }
 
 const char* AForm::GradeTooHighException::what() const throw()
 {
-    return "AForm Grade is too high\n";
+    return "Form Grade is too high\n";
 }
 
 const char* AForm::GradeTooLowException::what() const throw()
 {
-    return "AForm Grade is too low\n";
+    return "Form Grade is too low\n";
 }
 
 std::ostream& operator<<(std::ostream& os, const AForm& a)

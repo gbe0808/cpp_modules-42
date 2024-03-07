@@ -10,7 +10,7 @@ int main()
         Bureaucrat jnho("jnho", 0);
         cout << jnho;
     } catch (std::exception& e) {
-        cout << e.what() << '\n';
+        cerr << e.what() << '\n';
     }
 
     cout << "--------------------------------------------\n";
@@ -25,7 +25,7 @@ int main()
         jbok.decrementGrade();
         cout << jbok;
     } catch (std::exception& e) {
-        cout << e.what() << '\n';
+        cerr << e.what() << '\n';
     }
 
     cout << "--------------------------------------------\n";
@@ -34,9 +34,9 @@ int main()
         Bureaucrat jdoh("jdoh", 151);
         cout << jdoh;
     } catch (std::exception& e) {
-        cout << e.what() << '\n';
+        cerr << e.what() << '\n';
     } catch (Bureaucrat::GradeTooLowException& e) {
-        cout << e.what() << '\n';
+        cerr << e.what() << '\n';
     }
 
     cout << "--------------------------------------------\n";
@@ -57,7 +57,7 @@ int main()
         jpark2.incrementGrade();
         cout << jpark2;
     } catch (std::exception& e) {
-        cout << e.what() << '\n';
+        cerr << e.what() << '\n';
     }
     cout << "--------------------------------------------\n";
 

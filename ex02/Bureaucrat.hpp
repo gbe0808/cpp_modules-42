@@ -25,7 +25,7 @@ public:
 
     void incrementGrade();
     void decrementGrade();
-    void signForm(AForm *form);
+    void executeForm(AForm const & form);
 
     class GradeTooHighException : public exception
     {
