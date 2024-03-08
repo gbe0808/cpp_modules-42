@@ -3,36 +3,36 @@
 #include <exception>
 #include <string>
 #include "AForm.hpp"
-using namespace std;
 
 class AForm;
 
 class Bureaucrat
 {
 private:
-    const string _name;
+    const std::string _name;
     short _grade;
     Bureaucrat();
     Bureaucrat &operator=(const Bureaucrat &ref);
 
 public:
-    Bureaucrat(const string name, short grade);
+    Bureaucrat(const std::string name, short grade);
     Bureaucrat(const Bureaucrat &ref);
     ~Bureaucrat();
 
-    const string &getName() const;
+    const std::string &getName() const;
     short getGrade() const;
 
     void incrementGrade();
     void decrementGrade();
+    void signForm(AForm &form);
     void executeForm(AForm const & form);
 
-    class GradeTooHighException : public exception
+    class GradeTooHighException : public std::exception
     {
     public:
         const char *what() const throw();
     };
-    class GradeTooLowException : public exception
+    class GradeTooLowException : public std::exception
     {
     public:
         const char *what() const throw();

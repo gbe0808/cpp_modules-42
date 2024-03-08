@@ -1,9 +1,8 @@
 #include <iostream>
 #include "Bureaucrat.hpp"
 
-Bureaucrat::Bureaucrat(const string name, short grade) : _name(name), _grade(grade)
+Bureaucrat::Bureaucrat(const std::string name, short grade) : _name(name), _grade(grade)
 {
-    cout << grade << '\n';
     if (grade < 1)
         throw GradeTooHighException();
     if (grade > 150)
@@ -20,7 +19,7 @@ Bureaucrat& Bureaucrat::operator=(const Bureaucrat& ref)
     return *this;
 }
 
-const string& Bureaucrat::getName() const
+const std::string& Bureaucrat::getName() const
 {
     return _name;
 }
@@ -56,13 +55,25 @@ const char* Bureaucrat::GradeTooLowException::what() const throw()
     return "Grade is too low\n";
 }
 
+void Bureaucrat::signForm(AForm &form)
+{
+    try {
+        form.beSigned(*this);
+        std::cout << _name << " signed " << form.getName() << ".\n";
+    } catch (const AForm::AlreadySignedException &e) {
+        std::cerr << _name << " couldn't sign " << form.getName() << " because it is already signed.\n";
+    } catch (const AForm::GradeTooLowException &e) {
+        std::cerr << _name << " couldn't sign " << form.getName() << " because the grade is too low.\n";
+    }
+}
+
 void Bureaucrat::executeForm(AForm const & form)
 {
     try {
         form.execute(*this);
-        cout << "Bureaucrat " << _name << " executes " << form.getName() << '\n';
+        std::cout << "Bureaucrat " << _name << " executes " << form.getName() << '\n';
     } catch(std::exception &e) {
-        cerr << e.what();
+        std::cerr << e.what();
     }
 }
 

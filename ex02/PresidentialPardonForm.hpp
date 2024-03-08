@@ -11,7 +11,7 @@ private:
 	PresidentialPardonForm& operator=(const PresidentialPardonForm& ref);
 
 public:
-	PresidentialPardonForm(const string &target);
+	PresidentialPardonForm(const std::string &target);
 	PresidentialPardonForm(const PresidentialPardonForm& ref);
 	~PresidentialPardonForm();
 

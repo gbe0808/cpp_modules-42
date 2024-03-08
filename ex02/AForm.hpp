@@ -3,14 +3,13 @@
 #include <exception>
 #include <string>
 #include "Bureaucrat.hpp"
-using namespace std;
 
 class Bureaucrat;
 
 class AForm
 {
 private:
-    const string _name;
+    const std::string _name;
     bool _is_signed;
     const short _grade_to_sign;
     const short _grade_to_exec;
@@ -20,11 +19,11 @@ protected:
     AForm();
 
 public:
-    AForm(const string &name, const short grade_to_sign, const short grade_to_exec);
+    AForm(const std::string &name, const short grade_to_sign, const short grade_to_exec);
     AForm(const AForm &ref);
     virtual ~AForm();
 
-    const string &getName() const;
+    const std::string &getName() const;
     bool getIsSigned() const;
     short getGradeToSign() const;
     short getGradeToExec() const;
@@ -32,17 +31,17 @@ public:
     void beSigned(Bureaucrat &bureaucrat);
     virtual void execute(Bureaucrat const &executor) const = 0;
 
-    class AlreadySignedException : public exception
+    class AlreadySignedException : public std::exception
     {
     public:
         const char *what() const throw();
     };
-    class GradeTooHighException : public exception
+    class GradeTooHighException : public std::exception
     {
     public:
         const char *what() const throw();
     };
-    class GradeTooLowException : public exception
+    class GradeTooLowException : public std::exception
     {
     public:
         const char *what() const throw();

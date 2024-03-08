@@ -2,9 +2,14 @@
 #include "Bureaucrat.hpp"
 #include "Form.hpp"
 
+void leak_func()
+{
+    system("leaks ex01");
+}
+
 int main()
 {
-    cout << "using namespace std를 지우시오.\n";
+    // atexit(leak_func);
 
     try {
         Form f1("form1", 0, 0);
@@ -17,10 +22,10 @@ int main()
         Form f8("form8", 151, 50);
         Form f9("form9", 151, 151);
     } catch (std::exception &e) {
-        cerr << e.what() << '\n';
+        std::cerr << e.what() << '\n';
     }
 
-    cout << "--------------------------------------------\n\n";
+    std::cout << "--------------------------------------------\n\n";
 
     try {
         Form cleanser1("Perfect Whip", 10, 10);
@@ -38,7 +43,7 @@ int main()
         jnho.signForm(cleanser2);
 
     } catch (std::exception &e) {
-        cerr << e.what() << '\n';
+        std::cerr << e.what() << '\n';
     }
 
     return 0;

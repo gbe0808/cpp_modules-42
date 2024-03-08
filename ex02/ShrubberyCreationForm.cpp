@@ -4,7 +4,7 @@
 
 ShrubberyCreationForm::ShrubberyCreationForm() : AForm() {}
 
-ShrubberyCreationForm::ShrubberyCreationForm(const string &target) : AForm(target, SIGN_GRADE, EXEC_GRADE) {}
+ShrubberyCreationForm::ShrubberyCreationForm(const std::string &target) : AForm(target, SIGN_GRADE, EXEC_GRADE) {}
 
 ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& ref) : AForm(ref.getName(), SIGN_GRADE, EXEC_GRADE) {}
 

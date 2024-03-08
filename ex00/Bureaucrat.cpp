@@ -1,9 +1,8 @@
 #include <iostream>
 #include "Bureaucrat.hpp"
 
-Bureaucrat::Bureaucrat(const string name, short grade) : _name(name)
+Bureaucrat::Bureaucrat(const std::string name, short grade) : _name(name)
 {
-    cout << grade << '\n';
     if (grade < 1)
         throw GradeTooHighException();
     if (grade > 150)
@@ -21,7 +20,7 @@ Bureaucrat& Bureaucrat::operator=(const Bureaucrat& ref)
     return *this;
 }
 
-const string& Bureaucrat::getName() const
+const std::string& Bureaucrat::getName() const
 {
     return _name;
 }

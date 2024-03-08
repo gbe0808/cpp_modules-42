@@ -3,7 +3,7 @@
 
 PresidentialPardonForm::PresidentialPardonForm() : AForm() {}
 
-PresidentialPardonForm::PresidentialPardonForm(const string &target) : AForm(target, SIGN_GRADE, EXEC_GRADE) {}
+PresidentialPardonForm::PresidentialPardonForm(const std::string &target) : AForm(target, SIGN_GRADE, EXEC_GRADE) {}
 
 PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm& ref) : AForm(ref.getName(), SIGN_GRADE, EXEC_GRADE) {}
 

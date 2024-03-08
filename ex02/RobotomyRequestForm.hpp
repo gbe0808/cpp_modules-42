@@ -11,7 +11,7 @@ private:
 	RobotomyRequestForm& operator=(const RobotomyRequestForm& ref);
 
 public:
-	RobotomyRequestForm(const string &target);
+	RobotomyRequestForm(const std::string &target);
 	RobotomyRequestForm(const RobotomyRequestForm& ref);
 	~RobotomyRequestForm();
 

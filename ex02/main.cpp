@@ -5,16 +5,23 @@
 #include "RobotomyRequestForm.hpp"
 #include "ShrubberyCreationForm.hpp"
 
+void leak_func()
+{
+    system("leaks ex02");
+}
+
 int main()
 {
-    cout << "using namespace std를 지우시오.\n";
+    // atexit(leak_func);
 
     // AForm form;
 
+    AForm *f1 = NULL, *f2 = NULL, *f3 = NULL;
+
     try {
-        AForm *f1 = new PresidentialPardonForm("form1");
-        AForm *f2 = new RobotomyRequestForm("form2");
-        AForm *f3 = new ShrubberyCreationForm("form3");
+        f1 = new PresidentialPardonForm("form1");
+        f2 = new RobotomyRequestForm("form2");
+        f3 = new ShrubberyCreationForm("form3");
 
         Bureaucrat arr[4] = {
             Bureaucrat("jnho", 148),
@@ -22,16 +29,25 @@ int main()
             Bureaucrat("jdoh", 40),
             Bureaucrat("jpark2", 2)
         };
-        
-        for (int i = 0; i < 4; i++) {
+
+        int test_bureaucrat = 3;
+        if (test_bureaucrat < 1 || test_bureaucrat > 4)
+            throw "out of bound";
+        for (int i = 0; i < test_bureaucrat; i++) {
             arr[i].executeForm(*f1);
             arr[i].executeForm(*f2);
             arr[i].executeForm(*f3);
         }
-
     } catch (std::exception &e) {
-        cerr << e.what() << '\n';
+        std::cerr << e.what() << '\n';
     }
+
+    if (f1)
+        delete f1;
+    if (f2)
+        delete f2;
+    if (f3)
+        delete f3;
 
     return 0;
 }

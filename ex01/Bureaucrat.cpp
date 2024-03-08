@@ -1,9 +1,8 @@
 #include <iostream>
 #include "Bureaucrat.hpp"
 
-Bureaucrat::Bureaucrat(const string name, short grade) : _name(name), _grade(grade)
+Bureaucrat::Bureaucrat(const std::string name, short grade) : _name(name), _grade(grade)
 {
-    cout << grade << '\n';
     if (grade < 1)
         throw GradeTooHighException();
     if (grade > 150)
@@ -20,7 +19,7 @@ Bureaucrat& Bureaucrat::operator=(const Bureaucrat& ref)
     return *this;
 }
 
-const string& Bureaucrat::getName() const
+const std::string& Bureaucrat::getName() const
 {
     return _name;
 }
@@ -60,11 +59,11 @@ void Bureaucrat::signForm(Form &form)
 {
     try {
         form.beSigned(*this);
-        cout << _name << " signed " << form.getName() << ".\n";
+        std::cout << _name << " signed " << form.getName() << ".\n";
     } catch (const Form::AlreadySignedException &e) {
-        cerr << _name << " couldn't sign " << form.getName() << " because it is already signed.\n";
+        std::cerr << _name << " couldn't sign " << form.getName() << " because it is already signed.\n";
     } catch (const Form::GradeTooLowException &e) {
-        cerr << _name << " couldn't sign " << form.getName() << " because the grade is too low.\n";
+        std::cerr << _name << " couldn't sign " << form.getName() << " because the grade is too low.\n";
     }
 }
 

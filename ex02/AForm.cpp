@@ -3,7 +3,7 @@
 
 AForm::AForm() : _name(""), _is_signed(false), _grade_to_sign(0), _grade_to_exec(0) {}
 
-AForm::AForm(const string& name, const short grade_to_sign, const short grade_to_exec) : _name(name), _is_signed(false), _grade_to_sign(grade_to_sign), _grade_to_exec(grade_to_exec)
+AForm::AForm(const std::string& name, const short grade_to_sign, const short grade_to_exec) : _name(name), _is_signed(false), _grade_to_sign(grade_to_sign), _grade_to_exec(grade_to_exec)
 {
     if (grade_to_sign < 1 || grade_to_exec < 1)
         throw GradeTooHighException();
@@ -21,7 +21,7 @@ AForm& AForm::operator=(const AForm& ref)
     return *this;
 }
 
-const string& AForm::getName() const
+const std::string& AForm::getName() const
 {
     return _name;
 }
@@ -43,8 +43,7 @@ short AForm::getGradeToExec() const
 
 void AForm::beSigned(Bureaucrat &bureaucrat)
 {
-    const short grade = bureaucrat.getGrade();
-    if (grade > _grade_to_sign)
+    if (bureaucrat.getGrade() > _grade_to_sign)
         throw GradeTooLowException();
     if (_is_signed)
         throw AlreadySignedException();

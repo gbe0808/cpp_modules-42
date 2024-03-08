@@ -11,7 +11,7 @@ private:
 	ShrubberyCreationForm& operator=(const ShrubberyCreationForm& ref);
 
 public:
-	ShrubberyCreationForm(const string &target);
+	ShrubberyCreationForm(const std::string &target);
 	ShrubberyCreationForm(const ShrubberyCreationForm& ref);
 	~ShrubberyCreationForm();
 

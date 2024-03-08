@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Form.hpp"
 
-Form::Form(const string& name, const short grade_to_sign, const short grade_to_exec) : _name(name), _is_signed(false), _grade_to_sign(grade_to_sign), _grade_to_exec(grade_to_exec)
+Form::Form(const std::string& name, const short grade_to_sign, const short grade_to_exec) : _name(name), _is_signed(false), _grade_to_sign(grade_to_sign), _grade_to_exec(grade_to_exec)
 {
     if (grade_to_sign < 1 || grade_to_exec < 1)
         throw GradeTooHighException();
@@ -19,7 +19,7 @@ Form& Form::operator=(const Form& ref)
     return *this;
 }
 
-const string& Form::getName() const
+const std::string& Form::getName() const
 {
     return _name;
 }
