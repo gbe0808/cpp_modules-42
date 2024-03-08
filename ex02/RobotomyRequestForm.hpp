@@ -15,6 +15,6 @@ public:
 	RobotomyRequestForm(const RobotomyRequestForm& ref);
 	~RobotomyRequestForm();
 
-	void execute(Bureaucrat const &executor);
+	void execute(Bureaucrat const &executor) const;
 
 };

@@ -60,9 +60,9 @@ void Bureaucrat::executeForm(AForm const & form)
 {
     try {
         form.execute(*this);
-
+        cout << "Bureaucrat " << _name << " executes " << form.getName() << '\n';
     } catch(std::exception &e) {
-        
+        cerr << e.what();
     }
 }
 

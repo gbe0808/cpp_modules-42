@@ -16,19 +16,25 @@ ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationF
 
 ShrubberyCreationForm::~ShrubberyCreationForm() {}
 
-void ShrubberyCreationForm::execute(Bureaucrat const &executor) {
+void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
+{
+	if (executor.getGrade() > getGradeToExec())
+        throw GradeTooLowException();
+    if (getIsSigned())
+        throw AlreadySignedException();
+
 	std::ofstream outfile(getName() + "_shrubbery", std::ios::out | std::ios::trunc);
 
 	if (!outfile)
 		throw "File cannot be opened\n";
 
-	outfile << "     ###";
-	outfile << "    #o###";
-	outfile << "  #####o###";
-	outfile << " #o#\\#|#/###";
-	outfile << "  ###\\|/#o#";
-	outfile << "   # }|{  #";
-	outfile << "     }|{";
+	outfile << "     ###\n";
+	outfile << "    #o###\n";
+	outfile << "  #####o###\n";
+	outfile << " #o#\\#|#/###\n";
+	outfile << "  ###\\|/#o#\n";
+	outfile << "   # }|{  #\n";
+	outfile << "     }|{\n";
 
 	outfile.close();
 }

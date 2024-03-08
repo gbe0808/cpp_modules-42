@@ -15,6 +15,6 @@ public:
 	ShrubberyCreationForm(const ShrubberyCreationForm& ref);
 	~ShrubberyCreationForm();
 
-	void execute(Bureaucrat const &executor);
+	void execute(Bureaucrat const &executor) const;
 
 };

@@ -15,6 +15,6 @@ public:
 	PresidentialPardonForm(const PresidentialPardonForm& ref);
 	~PresidentialPardonForm();
 
-	void execute(Bureaucrat const &executor);
+	void execute(Bureaucrat const &executor) const;
 
 };

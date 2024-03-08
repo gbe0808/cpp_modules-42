@@ -17,7 +17,13 @@ RobotomyRequestForm& RobotomyRequestForm::operator=(const RobotomyRequestForm& r
 
 RobotomyRequestForm::~RobotomyRequestForm() {}
 
-void RobotomyRequestForm::execute(Bureaucrat const &executor) {
+void RobotomyRequestForm::execute(Bureaucrat const &executor) const
+{
+	if (executor.getGrade() > getGradeToExec())
+        throw GradeTooLowException();
+    if (getIsSigned())
+        throw AlreadySignedException();
+
 	cout << "zeeeing~~\n";
 
 	std::srand(static_cast<unsigned int>(std::time(NULL)));
