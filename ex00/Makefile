@@ -1,10 +1,10 @@
-SRCS	= main.cpp Bureaucrat.cpp
+SRCS	= main.cpp Convert.cpp
 
 OBJS	= ${SRCS:.cpp=.o}
 
 CXXFLAGS	= -Wall -Wextra -Werror
 
-NAME	= ex00
+NAME	= convert
 
 all:	${NAME}
 
