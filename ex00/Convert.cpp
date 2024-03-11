@@ -1,4 +1,5 @@
 #include <cctype>
+#include <cmath>
 #include <iostream>
 #include "Convert.hpp"
 
@@ -17,9 +18,9 @@ ScalarConverter &ScalarConverter::operator=(const ScalarConverter &ref)
     return *this;
 }
 
-unsigned short ScalarConverter::check_type(string &literal)
+unsigned short ScalarConverter::check_type(std::string &literal)
 {
-    if (literal.find('.') != string::npos) {
+    if (literal.find('.') != std::string::npos) {
         int dot_num = 0;
         if (!(literal[0] == '-' || literal[0] == '+' || std::isdigit(literal[0])))
             return ERROR_TYPE;
@@ -50,10 +51,12 @@ unsigned short ScalarConverter::check_type(string &literal)
         if (!std::isdigit(literal[i]))
             return ERROR_TYPE;
     }
+
     return INT;
 }
 
-void ScalarConverter::convert(string literal)
+// TODO: integer overflow
+void ScalarConverter::convert(std::string literal)
 {
     const unsigned short type = check_type(literal);
 
@@ -97,13 +100,21 @@ void ScalarConverter::convert(string literal)
         float num = std::strtof(literal.c_str(), NULL);
         char ch = static_cast<char>(num);
         
-        if (32 <= ch && ch < 127)
+        if (std::isprint(ch))
             std::cout << "char: '" << ch << '\'' << std::endl;
         else
             std::cout << "char: Non displayable" << std::endl;
+        
         std::cout << "int: " << static_cast<int>(num) << std::endl;
-        std::cout << "float: " << num << 'f' << std::endl;
-        std::cout << "double: " << static_cast<double>(num) << std::endl;
+        double int_part;
+        if (!std::modf(num, &int_part)) {
+            std::cout << "float: " << num << ".0f" << std::endl;
+            std::cout << "double: " << static_cast<double>(num) << ".0" << std::endl;
+        }
+        else {
+            std::cout << "float: " << num << 'f' << std::endl;
+            std::cout << "double: " << static_cast<double>(num) << std::endl;
+        }
     }
 
     else if (type == DOUBLE) {
@@ -118,12 +129,21 @@ void ScalarConverter::convert(string literal)
         double num = std::strtod(literal.c_str(), NULL);
         char ch = static_cast<char>(num);
         
-        if (32 <= ch && ch < 127)
+        if (std::isprint(ch))
             std::cout << "char: '" << ch << '\'' << std::endl;
         else
             std::cout << "char: Non displayable" << std::endl;
+        
         std::cout << "int: " << static_cast<int>(num) << std::endl;
-        std::cout << "float: " << static_cast<float>(num) << 'f' << std::endl;
-        std::cout << "double: " << num << std::endl;
+        
+        double int_part;
+        if (!std::modf(num, &int_part)) {
+            std::cout << "float: " << static_cast<float>(num) << ".0f" << std::endl;
+            std::cout << "double: " << num << ".0" << std::endl;
+        }
+        else {
+            std::cout << "float: " << static_cast<float>(num) << 'f' << std::endl;
+            std::cout << "double: " << num << std::endl;
+        }
     }
 }

@@ -2,8 +2,6 @@
 
 #include <string>
 
-using namespace std;
-
 class ScalarConverter
 {
 private:
@@ -20,9 +18,9 @@ private:
         ERROR_TYPE
     };
 
-    static unsigned short check_type(string &literal);
+    static unsigned short check_type(std::string &literal);
 
 public:
-    static void convert(string literal);
+    static void convert(std::string literal);
 
 };
