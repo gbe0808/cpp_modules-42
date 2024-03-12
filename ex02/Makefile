@@ -4,7 +4,7 @@ OBJS	= ${SRCS:.cpp=.o}
 
 CXXFLAGS	= -Wall -Wextra -Werror
 
-NAME	= serializer
+NAME	= ex02
 
 all:	${NAME}
 

@@ -1,5 +1,7 @@
 #include <cctype>
 #include <cmath>
+#include <cstdlib>
+#include <iomanip>
 #include <iostream>
 #include "Convert.hpp"
 
@@ -47,7 +49,7 @@ unsigned short ScalarConverter::check_type(std::string &literal)
     
     if (!(literal[0] == '-' || literal[0] == '+' || std::isdigit(literal[0])))
         return ERROR_TYPE;
-    for (size_t i = 0; i < literal.length(); i++) {
+    for (size_t i = 1; i < literal.length(); i++) {
         if (!std::isdigit(literal[i]))
             return ERROR_TYPE;
     }
@@ -55,10 +57,11 @@ unsigned short ScalarConverter::check_type(std::string &literal)
     return INT;
 }
 
-// TODO: integer overflow
 void ScalarConverter::convert(std::string literal)
 {
     const unsigned short type = check_type(literal);
+
+    std::cout << "type: " << type << '\n';
 
     if (type == ERROR_TYPE) {
         std::cout << "Error: invalid input" << std::endl;
@@ -97,6 +100,7 @@ void ScalarConverter::convert(std::string literal)
             return;
         }
 
+        std::cout.precision(std::numeric_limits<float>::digits10);
         float num = std::strtof(literal.c_str(), NULL);
         char ch = static_cast<char>(num);
         
@@ -126,6 +130,7 @@ void ScalarConverter::convert(std::string literal)
             return;
         }
 
+        std::cout.precision(std::numeric_limits<double>::digits10);
         double num = std::strtod(literal.c_str(), NULL);
         char ch = static_cast<char>(num);
         
