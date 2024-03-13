@@ -28,8 +28,8 @@ int main( void )
     // std::cout << ::min( v1, v2 ).at(1) << std::endl;
     // std::cout << ::max( v1, v2 ).at(1) << std::endl;
 
-    float f = 42.42;
-    double g = 21.21;
+    // float f = 42.42;
+    // double g = 21.21;
 
     // ::swap(f, g);
 

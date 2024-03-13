@@ -13,7 +13,7 @@ public:
         _size = 0;
         _array = new T[0];
     };
-    Array(unsigned int n) {
+    Array(const unsigned int n) {
         _size = n;
         _array = new T[n];
     };
@@ -21,12 +21,16 @@ public:
     Array(const Array &ref) {
         _size = ref._size;
         _array = new T[_size];
+        for (unsigned int i = 0; i < _size; i++)
+            _array[i] = ref._array[i];
     };
 
     Array &operator=(const Array &ref) {
         delete this;
-        _size = ref._size;
+        _size = ref.size();
         _array = new T[_size];
+        for (unsigned int i = 0; i < _size; i++)
+            _array[i] = ref[i];
         return *this;
     };
 
@@ -34,7 +38,13 @@ public:
         delete _array;
     };
 
-    T &operator[](unsigned int idx) {
+    T &operator[](const unsigned int idx) {
+        if (idx >= _size)
+            throw std::exception();
+        return _array[idx];
+    };
+
+    const T &operator[](const unsigned int idx) const {
         if (idx >= _size)
             throw std::exception();
         return _array[idx];

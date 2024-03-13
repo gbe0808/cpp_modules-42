@@ -1,10 +1,15 @@
 #pragma once
 
-#include <utility>
-
 template <typename T>
-void iter(T *array, size_t length, void (*f)(T &))
+void iter(T *array, const unsigned int length, void (*f)(T &))
 {
-    for (size_t i = 0; i < length; i++)
+    for (unsigned int i = 0; i < length; i++)
         f(array[i]);
 }
+
+// template <typename T>
+// void iter(const T *array, const unsigned int length, void (*f)(const T &))
+// {
+//     for (unsigned int i = 0; i < length; i++)
+//         f(array[i]);
+// }
