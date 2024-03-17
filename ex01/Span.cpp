@@ -1,3 +1,4 @@
+#include <cmath>
 #include <climits>
 #include "Span.hpp"
 
@@ -16,7 +17,6 @@ Span &Span::operator=(const Span &ref)
 
 Span::~Span() {}
 
-#include <iostream>
 void Span::addNumber(int num)
 {
 	if (static_cast<size_t>(_idx) >= _vec.capacity())
@@ -34,7 +34,7 @@ unsigned int Span::shortestSpan() const
 
 	for (it1 = _vec.begin(); it1 != _vec.end(); ++it1) {
 		for (it2 = it1 + 1; it2 != _vec.end(); ++it2) {
-			unsigned int span = static_cast<unsigned int>(*it2 - *it1);
+			unsigned int span = static_cast<unsigned int>(std::abs(*it2 - *it1));
 			if (span < shortest)
 				shortest = span;
 		}
