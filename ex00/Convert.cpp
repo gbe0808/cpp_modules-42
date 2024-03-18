@@ -22,6 +22,8 @@ ScalarConverter &ScalarConverter::operator=(const ScalarConverter &ref)
 
 unsigned short ScalarConverter::check_type(std::string &literal)
 {
+    if (literal.length() == 1 && ((32 <= literal[0] && literal[0] < '0') || ('9' < literal[0] && literal[0] < 127)))
+        return CHAR;
     if (literal.find('.') != std::string::npos) {
         int dot_num = 0;
         if (!(literal[0] == '-' || literal[0] == '+' || std::isdigit(literal[0])))
@@ -40,8 +42,6 @@ unsigned short ScalarConverter::check_type(std::string &literal)
             return DOUBLE;
         return ERROR_TYPE;
     }
-    if (literal.length() == 1 && ((32 <= literal[0] && literal[0] < '0') || ('9' < literal[0] && literal[0] < 127)))
-        return CHAR;
     if (literal == "nanf" || literal == "+inff" || literal == "-inff" || literal == "inff")
         return FLOAT;
     if (literal == "nan" || literal == "+inf" || literal == "-inf" || literal == "inf")

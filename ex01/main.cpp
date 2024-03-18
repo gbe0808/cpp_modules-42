@@ -16,5 +16,13 @@ int main()
 
 	std::cout << data_ptr->ch << data_ptr->num << data_ptr->str << std::endl;
 
+	int *a = new int[10];
+	for (int i=0;i<10;i++)
+		a[i] = (i + 1) * 3;
+
+	short *p = reinterpret_cast<short *>(a);
+
+	for (int i = 0; i < 10; i++)
+		std::cout << *p++ << std::endl;
 	return 0;
 }

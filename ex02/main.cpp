@@ -31,8 +31,10 @@ Base * generate()
 void identify(Base *p)
 {
 	std::cout << "identify(pointer)\n";
-	if (dynamic_cast<A*>(p) != NULL) {
+	A *pa;
+	if ((pa = dynamic_cast<A*>(p)) != NULL) {
 		std::cout << "A로 캐스팅 되었습니다.\n";
+		pa->func();
 	}
 	else if (dynamic_cast<B*>(p) != NULL) {
 		std::cout << "B로 캐스팅 되었습니다.\n";

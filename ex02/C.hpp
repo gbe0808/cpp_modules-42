@@ -6,4 +6,5 @@ class C : public Base
 {
 public:
 	~C();
+	void func();
 };
