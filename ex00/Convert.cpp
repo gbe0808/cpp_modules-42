@@ -100,7 +100,6 @@ void ScalarConverter::convert(std::string literal)
             return;
         }
 
-        std::cout.precision(std::numeric_limits<float>::digits10);
         float num = std::strtof(literal.c_str(), NULL);
         char ch = static_cast<char>(num);
         
@@ -111,12 +110,15 @@ void ScalarConverter::convert(std::string literal)
         
         std::cout << "int: " << static_cast<int>(num) << std::endl;
         double int_part;
+        std::cout.precision(std::numeric_limits<float>::digits10);
         if (!std::modf(num, &int_part)) {
             std::cout << "float: " << num << ".0f" << std::endl;
+            std::cout.precision(std::numeric_limits<double>::digits10);
             std::cout << "double: " << static_cast<double>(num) << ".0" << std::endl;
         }
         else {
             std::cout << "float: " << num << 'f' << std::endl;
+            std::cout.precision(std::numeric_limits<double>::digits10);
             std::cout << "double: " << static_cast<double>(num) << std::endl;
         }
     }
@@ -130,7 +132,6 @@ void ScalarConverter::convert(std::string literal)
             return;
         }
 
-        std::cout.precision(std::numeric_limits<double>::digits10);
         double num = std::strtod(literal.c_str(), NULL);
         char ch = static_cast<char>(num);
         
@@ -142,12 +143,15 @@ void ScalarConverter::convert(std::string literal)
         std::cout << "int: " << static_cast<int>(num) << std::endl;
         
         double int_part;
+        std::cout.precision(std::numeric_limits<float>::digits10);
         if (!std::modf(num, &int_part)) {
             std::cout << "float: " << static_cast<float>(num) << ".0f" << std::endl;
+            std::cout.precision(std::numeric_limits<double>::digits10);
             std::cout << "double: " << num << ".0" << std::endl;
         }
         else {
             std::cout << "float: " << static_cast<float>(num) << 'f' << std::endl;
+            std::cout.precision(std::numeric_limits<double>::digits10);
             std::cout << "double: " << num << std::endl;
         }
     }

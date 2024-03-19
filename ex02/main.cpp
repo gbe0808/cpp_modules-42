@@ -6,7 +6,7 @@
 #include "B.hpp"
 #include "C.hpp"
 
-Base * generate()
+Base *generate()
 {
 	std::srand(static_cast<unsigned int>(std::time(0)));
 	Base *ret = NULL;
@@ -31,10 +31,8 @@ Base * generate()
 void identify(Base *p)
 {
 	std::cout << "identify(pointer)\n";
-	A *pa;
-	if ((pa = dynamic_cast<A*>(p)) != NULL) {
+	if (dynamic_cast<A*>(p) != NULL) {
 		std::cout << "A로 캐스팅 되었습니다.\n";
-		pa->func();
 	}
 	else if (dynamic_cast<B*>(p) != NULL) {
 		std::cout << "B로 캐스팅 되었습니다.\n";
@@ -45,6 +43,7 @@ void identify(Base *p)
 	else {
 		std::cout << "캐스팅 되지 못함\n";
 	}
+	std::cout << "\n----------------------------------\n";
 }
 
 void identify(Base &p)
@@ -80,13 +79,18 @@ int main()
 	Base *base = generate();
 
 	if (base == NULL) {
-		std::cout << "Bad allocation\n";
+		std::cout << "??";
 		return 1;
 	}
 	
+	std::cout << "----------------------------------\n";
+
 	// pointer
 	identify(base);
 
 	// reference
 	identify(*base);
+
+	delete base;
+	return 0;
 }
