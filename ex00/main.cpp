@@ -18,6 +18,10 @@ int main( void )
     std::cout << "min( c, d ) = " << ::min( c, d ) << std::endl;
     std::cout << "max( c, d ) = " << ::max( c, d ) << std::endl;
 
+    const int ca = 5, cb = 6;
+    std::cout << "min: " << min(ca, cb) << std::endl;
+    std::cout << "max: " << max(ca, cb) << std::endl;
+
     // std::vector<int> v1, v2;
     // v1.push_back(1);
     // v1.push_back(2);

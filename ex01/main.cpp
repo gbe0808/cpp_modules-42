@@ -25,7 +25,7 @@ int main()
 {
     int arr_int[5] = {1, 3, 5, 7, 9};
     char arr_char[5] = {'a', 'b', 'c', 'd', 'e'};
-    // const int arr_const[5] = {2, 4, 6, 8, 10};
+    const int arr_const[5] = {2, 4, 6, 8, 10};
 
     ::iter(arr_int, 5, print_int);
     std::cout << std::endl;
@@ -34,6 +34,6 @@ int main()
     std::cout << std::endl;
     ::iter(arr_char, 5, print_char);
     std::cout << std::endl;
-    // ::iter(arr_const, 5, print_const_int);
+    ::iter(arr_const, 5, print_const_int);
     return 0;
 }

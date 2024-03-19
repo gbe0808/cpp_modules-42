@@ -18,7 +18,7 @@ int main(int, char**)
         mirror[i] = value;
     }
 
-    std::cout << "numbers\n";
+    std::cout << "numbers" << std::endl;
     for (int i = 0; i < MAX_VAL; i++)
         std::cout << numbers[i] << ' ';
     std::cout << std::endl;
@@ -52,7 +52,7 @@ int main(int, char**)
     }
     catch(const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        std::cerr << e.what() << std::endl;
     }
     try
     {
@@ -61,7 +61,7 @@ int main(int, char**)
     }
     catch(const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        std::cerr << e.what() << std::endl;
     }
     try
     {
@@ -72,7 +72,7 @@ int main(int, char**)
     }
     catch(const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        std::cerr << e.what() << std::endl;
     }
 
     std::cout << "--------------------const 테스트--------------------\n";
