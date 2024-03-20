@@ -26,7 +26,7 @@ public:
     };
 
     Array &operator=(const Array &ref) {
-        delete this;
+        delete[] this;
         _size = ref.size();
         _array = new T[_size];
         for (unsigned int i = 0; i < _size; i++)

@@ -2,9 +2,11 @@
 #include "Array.hpp"
 
 #define MAX_VAL 10
+void f() {system("leaks array");}
 
 int main(int, char**)
 {
+    atexit(f);
     Array<int> numbers(MAX_VAL);
     int* mirror = new int[MAX_VAL];
     srand(time(NULL));
@@ -74,6 +76,16 @@ int main(int, char**)
         for (unsigned int i = 0; i < MAX_VAL; i++)
             std::cout << "numbers[" << i << "] = " << tmp[i] << std::endl;
         // tmp[0] = 1;
+    }
+
+    std::cout << "------------------복사 연산자 테스트------------------\n";
+    {
+        Array<int> arr(MAX_VAL + 2);
+        arr = numbers;
+
+        // Array<std::string> str_arr(MAX_VAL);
+        // Array<std::string> t(MAX_VAL + 2);
+        // str_arr = t;
     }
 
     for (int i = 0; i < MAX_VAL; i++)
