@@ -35,7 +35,7 @@ public:
     };
 
     ~Array() {
-        delete _array;
+        delete[] _array;
     };
 
     T &operator[](const unsigned int idx) {
