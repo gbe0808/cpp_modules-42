@@ -81,11 +81,20 @@ int main(int, char**)
     std::cout << "------------------복사 연산자 테스트------------------\n";
     {
         Array<int> arr(MAX_VAL + 2);
+        for (int i = 0; i < MAX_VAL + 2; i++)
+            arr[i] = i + 1;
+
+        for (size_t i = 0; i < arr.size(); i++)
+            std::cout << "arr[" << i << "] = " << arr[i] << std::endl;
+            
         arr = numbers;
 
-        // Array<std::string> str_arr(MAX_VAL);
-        // Array<std::string> t(MAX_VAL + 2);
-        // str_arr = t;
+        for (size_t i = 0; i < arr.size(); i++)
+            std::cout << "arr[" << i << "] = " << arr[i] << std::endl;
+
+        Array<std::string> str_arr(MAX_VAL);
+        Array<std::string> t(MAX_VAL + 2);
+        str_arr = t;
     }
 
     for (int i = 0; i < MAX_VAL; i++)
