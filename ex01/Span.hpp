@@ -8,7 +8,7 @@ private:
 	Span();
 
 	std::vector<int> _vec;
-	unsigned int _idx;
+	unsigned int _max_size;
 public:
 	Span(unsigned int N);
 	Span(const Span &ref);

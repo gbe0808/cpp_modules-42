@@ -4,14 +4,14 @@
 
 Span::Span() {}
 
-Span::Span(unsigned int N) : _vec(N), _idx(0) {}
+Span::Span(unsigned int N) : _max_size(N) {}
 
-Span::Span(const Span &ref) : _vec(ref._vec), _idx(static_cast<unsigned int>(_vec.size())) {}
+Span::Span(const Span &ref) : _vec(ref._vec), _max_size(ref._max_size) {}
 
 Span &Span::operator=(const Span &ref)
 {
 	_vec = ref._vec;
-	_idx = _vec.size();
+	_max_size = _vec.size();
 	return *this;
 }
 
@@ -19,9 +19,9 @@ Span::~Span() {}
 
 void Span::addNumber(int num)
 {
-	if (static_cast<size_t>(_idx) >= _vec.capacity())
+	if (static_cast<size_t>(_max_size) <= _vec.size())
 		throw CapacityFullException();
-	_vec[_idx++] = num;
+	_vec.push_back(num);
 }
 
 unsigned int Span::shortestSpan() const
@@ -32,6 +32,7 @@ unsigned int Span::shortestSpan() const
 	std::vector<int>::const_iterator it1, it2;
 	unsigned int shortest = INT_MAX;
 
+	// O(N^2)
 	for (it1 = _vec.begin(); it1 != _vec.end(); ++it1) {
 		for (it2 = it1 + 1; it2 != _vec.end(); ++it2) {
 			unsigned int span = static_cast<unsigned int>(std::abs(*it2 - *it1));
