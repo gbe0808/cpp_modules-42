@@ -24,6 +24,14 @@ void Span::addNumber(int num)
 	_vec.push_back(num);
 }
 
+void Span::addNumbers(int *nums, int size)
+{
+	if (static_cast<size_t>(_max_size) <= _vec.size() + size)
+		throw CapacityFullException();
+	for (int i = 0; i < size; i++)
+		_vec.push_back(nums[i]);
+}
+
 unsigned int Span::shortestSpan() const
 {
 	if (_vec.size() <= 1)

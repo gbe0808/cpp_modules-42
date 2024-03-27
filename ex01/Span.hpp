@@ -16,6 +16,7 @@ public:
 	~Span();
 
 	void addNumber(int num);
+	void addNumbers(int *nums, int size);
 	unsigned int shortestSpan() const;
 	unsigned int longestSpan() const;
 
