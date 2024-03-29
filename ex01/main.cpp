@@ -23,5 +23,6 @@ int main(int argc, char **argv)
         std::cout << error << '\n';
     }
 
+    rpn->release_instance();
     return 0;
 }

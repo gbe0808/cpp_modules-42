@@ -43,7 +43,8 @@ RPN *RPN::get_instance(const char *arg)
 
 void RPN::release_instance()
 {
-    delete _instance;
+    if (_instance)
+        delete _instance;
     _instance = NULL;
 }
 
