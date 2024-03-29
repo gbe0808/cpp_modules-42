@@ -127,14 +127,14 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &ref)
     return *this;
 }
 
-BitcoinExchange *BitcoinExchange::getBitcoinExchange(const char *path)
+BitcoinExchange *BitcoinExchange::get_instance(const char *path)
 {
     if (!_instance)
         _instance = new BitcoinExchange(path);
     return _instance;
 }
 
-void BitcoinExchange::releaseInstance()
+void BitcoinExchange::release_instance()
 {
     delete _instance;
     _instance = NULL;

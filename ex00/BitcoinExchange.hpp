@@ -24,8 +24,8 @@ private:
     static double _get_actual_value(const std::string &date, double value);
 
 public:
-    static BitcoinExchange *getBitcoinExchange(const char *path);
-    static void releaseInstance();
+    static BitcoinExchange *get_instance(const char *path);
+    static void release_instance();
 
     static void exchange();
 };
