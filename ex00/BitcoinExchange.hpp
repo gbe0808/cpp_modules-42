@@ -1,24 +1,31 @@
 #pragma once
 
+#include <list>
 #include <map>
 #include <string>
 
 // singleton
 class BitcoinExchange {
 private:
-    static BitcoinExchange _instance;
+    static BitcoinExchange *_instance;
 
-    BitcoinExchange(); // X
-    BitcoinExchange(std::string &path);
+    BitcoinExchange();
+    BitcoinExchange(const char *path);
     BitcoinExchange(const BitcoinExchange &ref);
     BitcoinExchange &operator=(const BitcoinExchange &ref);
     ~BitcoinExchange();
 
-    std::map<std::string, double> data;
-    std::map<std::string, double> dealings;
+    std::map<std::string, double> _data;
+    std::list<std::string> _inputs;
+
+    static void _check_valid_date(std::string &date);
+    static void _check_valid_rate(std::string &rate);
+    static double _check_valid_value(std::string &value);
+    static double _get_actual_value(const std::string &date, double value);
 
 public:
-    static BitcoinExchange &getBitcoinExchange(std::string &path);
+    static BitcoinExchange *getBitcoinExchange(const char *path);
+    static void releaseInstance();
 
-
+    static void exchange();
 };
