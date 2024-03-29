@@ -28,7 +28,7 @@ void BitcoinExchange::_check_valid_date(std::string &date)
 
     ss >> year >> dash >> month >> dash >> day;
 
-    if (year < 2009 || month == 0 || month > 12 || day == 0 || day > 31)
+    if (month == 0 || month > 12 || day == 0 || day > 31)
         flag = true;
     else if (month == 2) {
         int leap = 0;
@@ -136,7 +136,8 @@ BitcoinExchange *BitcoinExchange::get_instance(const char *path)
 
 void BitcoinExchange::release_instance()
 {
-    delete _instance;
+    if (_instance)
+        delete _instance;
     _instance = NULL;
 }
 
@@ -147,7 +148,7 @@ double BitcoinExchange::_get_actual_value(const std::string &date, double value)
     it = _instance->_data.lower_bound(date);
     if (it == _instance->_data.end() || date != it->first) {
         if (it == _instance->_data.begin())
-            throw "early accessor";
+            return -1.0;
         --it;
     }
     return value * it->second;
@@ -160,7 +161,7 @@ void BitcoinExchange::exchange()
     for (; it != _instance->_inputs.end(); ++it) {
         const size_t pos = it->find(" | ");
         if (pos == std::string::npos) {
-            std::cout << "Error: bad input => no \" | \"" << '\n';
+            std::cout << "Error: bad input => " << *it << '\n';
             continue;
         }
         std::string date = it->substr(0, pos);
@@ -170,8 +171,7 @@ void BitcoinExchange::exchange()
         try {
             _check_valid_date(date);
         } catch (const char *error) {
-            (void) error;
-            std::cout << "Error: bad input => " << date << '\n';
+            std::cout << "Error: " << error << '\n';
             continue;
         }
 
@@ -183,6 +183,9 @@ void BitcoinExchange::exchange()
         }
 
         const double act_val = _get_actual_value(date, value);
-        std::cout << date << " => " << value << " = " << act_val << '\n';
+        if (act_val < 0.0)
+            std::cout << "Error: early accessor\n";
+        else
+            std::cout << date << " => " << value << " = " << act_val << '\n';
     }
 }
