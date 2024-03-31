@@ -2,17 +2,26 @@
 #include <sstream>
 #include "PmergeMe.hpp"
 
-int main()
+int main(int argc, char **argv)
 {
-    std::string str = "1 2 3 4 214748364 5";
-    std::istringstream ss(str);
-    int num;
-    while (ss >> num) {
-        std::cout << "num: " << num << '\n';
+    if (argc == 1) {
+        std::cout << "usage: ./" << argv[0] << "args ...\n";
+        return 1;
     }
 
-    if (!ss.eof()) {
-        std::cout << "fail?\n";
+    PmergeMe *pmergeMe = NULL;
+
+    try {
+        pmergeMe = PmergeMe::get_instance(argc, argv);
+    } catch (const char *error) {
+        std::cout << error << '\n';
+        return 1;
     }
+
+    size_t a = PmergeMe::Jacobsthal[0];
+    a += 1;
+    (void) a;
+    PmergeMe::execute();
+    PmergeMe::release_instance();
     return 0;
 }
