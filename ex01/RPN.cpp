@@ -79,6 +79,8 @@ int RPN::execute()
                 stk.push(num1 * num2);
                 break;
             case '/':
+                if (num2 == 0)
+                    throw "Zero division error";
                 stk.push(num1 / num2);
             }
         }
