@@ -26,6 +26,7 @@ void BitcoinExchange::_check_valid_date(std::string &date)
     char dash;
     bool flag = false;
 
+    // dash가 잘못된 경우
     ss >> year >> dash >> month >> dash >> day;
 
     if (month == 0 || month > 12 || day == 0 || day > 31)
@@ -145,6 +146,7 @@ double BitcoinExchange::_get_actual_value(const std::string &date, double value)
 {
     std::map<std::string, double>::iterator it;
 
+    // upper bound로 수정해보기
     it = _instance->_data.lower_bound(date);
     if (it == _instance->_data.end() || date != it->first) {
         if (it == _instance->_data.begin())
