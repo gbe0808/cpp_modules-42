@@ -4,16 +4,18 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "Elem.hpp"
 
-#define MAX_SIZE 100000
-typedef std::pair<int, int> pii;
+#define MAX_SIZE 1000000
+
+class Elem;
 
 class PmergeMe {
 private:
     static PmergeMe *_instance;
 
-    std::vector<pii> _vec;
-    std::deque<pii> _dq;
+    std::vector<Elem> _vec;
+    std::deque<Elem> _dq;
 
     PmergeMe();
     ~PmergeMe();
@@ -21,15 +23,11 @@ private:
     PmergeMe(const PmergeMe &ref);
     PmergeMe &operator=(const PmergeMe &ref);
 
-    static void _sort_vec(std::vector<pii> &origin_vec);
-    static void _merge_vec();
-    static void _insert_vec(std::vector<pii> &origin_vec, std::vector<pii> &child_vec);
-    static void _search_vec();
+    static void _sort_vec(std::vector<Elem> &origin_vec);
+    static void _insert_vec(std::vector<Elem> &origin_vec, std::vector<Elem> &child_vec);
 
-    static void _sort_dq();
-    static void _merge_dq();
-    static void _insert_dq();
-    static void _search_dq();
+    static void _sort_dq(std::deque<Elem> &origin_dq);
+    static void _insert_dq(std::deque<Elem> &origin_dq, std::deque<Elem> &child_dq);
 
 public:
     static const size_t Jacobsthal[];

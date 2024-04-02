@@ -1,5 +1,5 @@
+#include <ctime>
 #include <cstring>
-#include <sstream>
 #include <iostream>
 #include "PmergeMe.hpp"
 
@@ -23,8 +23,10 @@ PmergeMe::PmergeMe(int argc, char **argv)
         num = std::atoi(argv[i]);
         if (num == 0)
             throw "value must not be a zero";
-        _vec.push_back(std::make_pair(num, 0));
-        _dq.push_back(std::make_pair(num, 0));
+        if (num < 0)
+            throw "value must be a positive integer";
+        _vec.push_back(Elem(num));
+        _dq.push_back(Elem(num));
     }
     if (_vec.size() > MAX_SIZE)
         throw "over max size";
@@ -58,73 +60,136 @@ void PmergeMe::release_instance()
 void PmergeMe::execute()
 {
     std::cout << "Before: ";
-    for (std::vector<pii>::iterator it = _instance->_vec.begin(); it != _instance->_vec.end(); ++it)
-        std::cout << it->first << ' ';
+    for (std::vector<Elem>::iterator it = _instance->_vec.begin(); it != _instance->_vec.end(); ++it)
+        std::cout << *it << ' ';
     std::cout << std::endl;
-    _sort_vec(_instance->_vec);
+    
+    std::vector<Elem> sorted_vec(_instance->_vec);
+    std::sort(sorted_vec.begin(), sorted_vec.end());
     std::cout << "After: ";
-    for (std::vector<pii>::iterator it = _instance->_vec.begin(); it != _instance->_vec.end(); ++it)
-        std::cout << it->first << ' ';
+    for (std::vector<Elem>::iterator it = sorted_vec.begin(); it != sorted_vec.end(); ++it)
+        std::cout << *it << ' ';
     std::cout << std::endl;
-    // _sort_dq();
+
+    clock_t vec_start = clock();
+    _sort_vec(_instance->_vec);
+    clock_t vec_end = clock();
+    std::cout << "Time: " << (double)(vec_end - vec_start) / CLOCKS_PER_SEC << "s\n";
+    
+    clock_t dq_start = clock();
+    _sort_dq(_instance->_dq);
+    clock_t dq_end = clock();
+    std::cout << "Time: " << (double)(dq_end - dq_start) / CLOCKS_PER_SEC << "s\n";
 }
 
-void PmergeMe::_insert_vec(std::vector<pii> &origin_vec, std::vector<pii> &child_vec)
+void PmergeMe::_insert_vec(std::vector<Elem> &origin_vec, std::vector<Elem> &child_vec)
 {
     size_t sz = child_vec.size();
-    std::vector<pii> chain_vec(sz);
+    std::vector<Elem> chain_vec(sz);
 
-    for (size_t i = 0; i < sz; i++) {
-        const size_t idx = child_vec[i].second + 1;
-        // chain_vec[i] = std::make_pair(origin_vec[idx].first, idx);
-        chain_vec[i] = origin_vec[idx];
-    }
+    for (size_t i = 0; i < sz; i++)
+        chain_vec[i] = origin_vec[child_vec[i].get_par_idx() + 1];
     if (origin_vec.size() & 1)
         chain_vec.push_back(origin_vec.back());
 
-    for (size_t i = 0; i < chain_vec.size(); i++)
-        std::cout << chain_vec[i].first << ' ' << chain_vec[i].second << std::endl;
-    std::cout << std::endl;
-
+    std::vector<Elem> tmp(origin_vec);
     origin_vec.clear();
     origin_vec.push_back(chain_vec[0]);
     for (size_t i = 0; i < sz; i++)
-        origin_vec.push_back(child_vec[i]);
+        origin_vec.push_back(tmp[child_vec[i].get_par_idx()]);
 
-    for (int i = 1; true; i++) {
-        size_t idx = std::min(Jacobsthal[i], chain_vec.size() - 1);
-        if (Jacobsthal[i - 1] >= chain_vec.size() - 1)
-            break;
-        std::cout << "idx: " << idx << std::endl;
+    bool over_flag = false;
+    size_t idx;
+    for (int i = 1; !over_flag; i++) {
+        if (Jacobsthal[i] < chain_vec.size() - 1)
+            idx = Jacobsthal[i];
+        else {
+            idx = chain_vec.size() - 1;
+            over_flag = true;
+        }
         while (idx > Jacobsthal[i - 1]) {
-            std::vector<pii>::iterator it = std::upper_bound(origin_vec.begin(), origin_vec.end(), child_vec[idx]);
-            origin_vec.insert(it, child_vec[idx]);
+            std::vector<Elem>::iterator it = std::upper_bound(origin_vec.begin(), origin_vec.end(), chain_vec[idx]);
+            origin_vec.insert(it, chain_vec[idx]);
             --idx;
         }
     }
 }
 
-void PmergeMe::_sort_vec(std::vector<pii> &origin_vec)
+void PmergeMe::_sort_vec(std::vector<Elem> &origin_vec)
 {
     size_t sz = origin_vec.size();
     if (sz <= 1)
         return;
-    for (size_t i = 0; i < sz; i++)
-        origin_vec[i].second = i * 2;
     for (size_t i = 0; i < sz - 1; i += 2) {
         if (origin_vec[i] < origin_vec[i + 1])
-            std::swap(origin_vec[i], origin_vec[i + 1]);
+            Elem::swap(origin_vec[i], origin_vec[i + 1]);
+        origin_vec[i].set_cur_idx(i);
+        origin_vec[i + 1].set_cur_idx(i + 1);
     }
-    
-    std::vector<pii> child_vec(sz >> 1);
-    for (size_t i = 0; i < (sz >> 1); i++)
-        child_vec[i] = origin_vec[i * 2];
+    if (sz & 1)
+        origin_vec[sz - 1].set_cur_idx(sz - 1);
+
+    std::vector<Elem> child_vec(sz >> 1);
+    for (size_t i = 0; i < (sz >> 1); i++) {
+        child_vec[i] = origin_vec[i << 1];
+        child_vec[i].set_par_idx(i << 1);
+    }
     _sort_vec(child_vec);
-    for (size_t i = 0; i < sz; i++)
-        std::cout << origin_vec[i].first << ' ' << origin_vec[i].second << std::endl;
-    std::cout << std::endl;
-    for (size_t i = 0; i < (sz >> 1); i++)
-        std::cout << child_vec[i].first << ' ' << child_vec[i].second << std::endl;
-    std::cout << std::endl;
     _insert_vec(origin_vec, child_vec);
+}
+
+void PmergeMe::_insert_dq(std::deque<Elem> &origin_dq, std::deque<Elem> &child_dq)
+{
+    size_t sz = child_dq.size();
+    std::deque<Elem> chain_dq(sz);
+
+    for (size_t i = 0; i < sz; i++)
+        chain_dq[i] = origin_dq[child_dq[i].get_par_idx() + 1];
+    if (origin_dq.size() & 1)
+        chain_dq.push_back(origin_dq.back());
+
+    std::deque<Elem> tmp(origin_dq);
+    origin_dq.clear();
+    origin_dq.push_back(chain_dq[0]);
+    for (size_t i = 0; i < sz; i++)
+        origin_dq.push_back(tmp[child_dq[i].get_par_idx()]);
+
+    bool over_flag = false;
+    size_t idx;
+    for (int i = 1; !over_flag; i++) {
+        if (Jacobsthal[i] < chain_dq.size() - 1)
+            idx = Jacobsthal[i];
+        else {
+            idx = chain_dq.size() - 1;
+            over_flag = true;
+        }
+        while (idx > Jacobsthal[i - 1]) {
+            std::deque<Elem>::iterator it = std::upper_bound(origin_dq.begin(), origin_dq.end(), chain_dq[idx]);
+            origin_dq.insert(it, chain_dq[idx]);
+            --idx;
+        }
+    }
+}
+
+void PmergeMe::_sort_dq(std::deque<Elem> &origin_dq)
+{
+    size_t sz = origin_dq.size();
+    if (sz <= 1)
+        return;
+    for (size_t i = 0; i < sz - 1; i += 2) {
+        if (origin_dq[i] < origin_dq[i + 1])
+            Elem::swap(origin_dq[i], origin_dq[i + 1]);
+        origin_dq[i].set_cur_idx(i);
+        origin_dq[i + 1].set_cur_idx(i + 1);
+    }
+    if (sz & 1)
+        origin_dq[sz - 1].set_cur_idx(sz - 1);
+
+    std::deque<Elem> child_dq(sz >> 1);
+    for (size_t i = 0; i < (sz >> 1); i++) {
+        child_dq[i] = origin_dq[i << 1];
+        child_dq[i].set_par_idx(i << 1);
+    }
+    _sort_dq(child_dq);
+    _insert_dq(origin_dq, child_dq);
 }
