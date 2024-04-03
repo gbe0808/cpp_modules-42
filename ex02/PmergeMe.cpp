@@ -1,3 +1,4 @@
+#include <cassert>
 #include <ctime>
 #include <cstring>
 #include <iostream>
@@ -12,21 +13,22 @@ PmergeMe::~PmergeMe() {}
 
 PmergeMe::PmergeMe(int argc, char **argv)
 {
-    int num;
+    long num;
     for (int i = 1; i < argc; i++) {
         if (!(std::isdigit(argv[i][0]) || argv[i][0] == '+'))
             throw "value must be a positive integer";
-        for (size_t j = 1; j < std::strlen(argv[i]); j++) {
+        size_t len = std::strlen(argv[i]);
+        for (size_t j = 1; j < len; j++) {
             if (!std::isdigit(argv[i][j]))
                 throw "value must be a positive integer";
         }
-        num = std::atoi(argv[i]);
-        if (num == 0)
-            throw "value must not be a zero";
-        if (num < 0)
+        num = std::atol(argv[i]);
+        if (num > INT_MAX || len >= 12)
+            throw "value is too large";
+        if (num <= 0)
             throw "value must be a positive integer";
-        _vec.push_back(Elem(num));
-        _dq.push_back(Elem(num));
+        _vec.push_back(Elem(static_cast<int>(num)));
+        _dq.push_back(Elem(static_cast<int>(num)));
     }
     if (_vec.size() > MAX_SIZE)
         throw "over max size";
@@ -74,12 +76,18 @@ void PmergeMe::execute()
     clock_t vec_start = clock();
     _sort_vec(_instance->_vec);
     clock_t vec_end = clock();
-    std::cout << "Time: " << (double)(vec_end - vec_start) / CLOCKS_PER_SEC << "s\n";
+    std::cout << "Time to process a range of " << _instance->_vec.size() << " elements with std::vector : " << vec_end - vec_start << " us\n";
     
     clock_t dq_start = clock();
     _sort_dq(_instance->_dq);
     clock_t dq_end = clock();
-    std::cout << "Time: " << (double)(dq_end - dq_start) / CLOCKS_PER_SEC << "s\n";
+    std::cout << "Time to process a range of " << _instance->_vec.size() << " elements with std::deque : " << dq_end - dq_start << " us\n";
+
+    for (size_t i = 0; i < sorted_vec.size(); i++) {
+        if ((sorted_vec[i] == _instance->_vec[i]) && (sorted_vec[i] == _instance->_dq[i]))
+            continue;
+        assert(false);
+    }
 }
 
 void PmergeMe::_insert_vec(std::vector<Elem> &origin_vec, std::vector<Elem> &child_vec)

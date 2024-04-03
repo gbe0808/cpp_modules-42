@@ -6,7 +6,7 @@
 #include <vector>
 #include "Elem.hpp"
 
-#define MAX_SIZE 1000000
+#define MAX_SIZE 10000
 
 class Elem;
 
