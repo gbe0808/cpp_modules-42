@@ -26,7 +26,6 @@ void BitcoinExchange::_check_valid_date(std::string &date)
     char dash;
     bool flag = false;
 
-    // dash가 잘못된 경우
     ss >> year >> dash >> month >> dash >> day;
 
     if (month == 0 || month > 12 || day == 0 || day > 31)
@@ -146,13 +145,11 @@ double BitcoinExchange::_get_actual_value(const std::string &date, double value)
 {
     std::map<std::string, double>::iterator it;
 
-    // upper bound로 수정해보기
-    it = _instance->_data.lower_bound(date);
-    if (it == _instance->_data.end() || date != it->first) {
-        if (it == _instance->_data.begin())
-            return -1.0;
+    it = _instance->_data.upper_bound(date);
+    if (it == _instance->_data.end())
         --it;
-    }
+    if (it == _instance->_data.begin())
+        throw "early accessor";
     return value * it->second;
 }
 
@@ -166,10 +163,9 @@ void BitcoinExchange::exchange()
             std::cout << "Error: bad input => " << *it << '\n';
             continue;
         }
+
         std::string date = it->substr(0, pos);
         std::string value_str = it->substr(pos + 3);
-        double value;
-
         try {
             _check_valid_date(date);
         } catch (const char *error) {
@@ -177,6 +173,7 @@ void BitcoinExchange::exchange()
             continue;
         }
 
+        double value;
         try {
             value = _check_valid_value(value_str);
         } catch (const char *error) {
@@ -184,10 +181,11 @@ void BitcoinExchange::exchange()
             continue;
         }
 
-        const double act_val = _get_actual_value(date, value);
-        if (act_val < 0.0)
-            std::cout << "Error: early accessor\n";
-        else
+        try {
+            const double act_val = _get_actual_value(date, value);
             std::cout << date << " => " << value << " = " << act_val << '\n';
+        } catch (const char *error) {
+            std::cout << "Error: " << error << "\n";
+        }
     }
 }
