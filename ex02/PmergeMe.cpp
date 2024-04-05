@@ -4,7 +4,7 @@
 #include <iostream>
 #include "PmergeMe.hpp"
 
-const size_t PmergeMe::Jacobsthal[] = {0, 1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, 5461, 10923, 21845, 43691, 87381};
+const size_t PmergeMe::Jacobsthal[] = {1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, 5461, 10923, 21845, 43691, 87381};
 PmergeMe *PmergeMe::_instance = NULL;
 
 PmergeMe::PmergeMe() {}
@@ -109,16 +109,23 @@ void PmergeMe::_insert_vec(std::vector<Elem> &origin_vec, std::vector<Elem> &chi
     bool over_flag = false;
     size_t idx;
     for (int i = 1; !over_flag; i++) {
-        if (Jacobsthal[i] < chain_vec.size() - 1)
-            idx = Jacobsthal[i];
+        if (Jacobsthal[i] - 1 < chain_vec.size() - 1)
+            idx = Jacobsthal[i] - 1;
         else {
             idx = chain_vec.size() - 1;
             over_flag = true;
         }
-        while (idx > Jacobsthal[i - 1]) {
-            std::vector<Elem>::iterator it = std::upper_bound(origin_vec.begin(), origin_vec.end(), chain_vec[idx]);
+        std::vector<Elem>::iterator en;
+        size_t nxt_idx = Jacobsthal[i - 1] + (over_flag ? 2 : 1);
+        if (nxt_idx >= origin_vec.size())
+            nxt_idx = origin_vec.size() - 1;
+        en = origin_vec.begin() + nxt_idx;
+
+        while (idx >= Jacobsthal[i - 1]) {
+            std::vector<Elem>::iterator it = std::upper_bound(origin_vec.begin(), en, chain_vec[idx]);
             origin_vec.insert(it, chain_vec[idx]);
             --idx;
+            --en;
         }
     }
 }

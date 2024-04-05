@@ -60,8 +60,7 @@ int RPN::execute()
         if (std::isdigit(cur))
             stk.push(cur - '0');
         else {
-            int num1, num2;
-            long long res;
+            long long num1, num2, res;
             if (stk.size() < 2)
                 throw "Error";
 
