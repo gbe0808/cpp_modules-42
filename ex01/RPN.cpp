@@ -61,6 +61,7 @@ int RPN::execute()
             stk.push(cur - '0');
         else {
             int num1, num2;
+            long long res;
             if (stk.size() < 2)
                 throw "Error";
 
@@ -70,19 +71,22 @@ int RPN::execute()
             stk.pop();
             switch (cur) {
             case '+':
-                stk.push(num1 + num2);
+                res = num1 + num2;
                 break;
             case '-':
-                stk.push(num1 - num2);
+                res = num1 - num2;
                 break;
             case '*':
-                stk.push(num1 * num2);
+                res = num1 * num2;
                 break;
             case '/':
                 if (num2 == 0)
                     throw "Zero division error";
-                stk.push(num1 / num2);
+                res = num1 / num2;
             }
+            if (res > INT_MAX || res < INT_MIN)
+                throw "Error";
+            stk.push(static_cast<int>(res));
         }
     }
 
