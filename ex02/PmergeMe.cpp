@@ -1,4 +1,5 @@
 #include <cassert>
+#include <cmath>
 #include <ctime>
 #include <cstring>
 #include <iostream>
@@ -83,11 +84,22 @@ void PmergeMe::execute()
     clock_t dq_end = clock();
     std::cout << "Time to process a range of " << _instance->_vec.size() << " elements with std::deque : " << dq_end - dq_start << " us\n";
 
-    for (size_t i = 0; i < sorted_vec.size(); i++) {
+    // std::cout << "debugging print vec\n";
+    // for (size_t i = 0; i < _instance->_vec.size(); i++) {
+    //     std::cout << _instance->_vec[i] << ' ';
+    // } std::cout << std::endl;
+    // std::cout << "debugging print dq\n";
+    // for (size_t i = 0; i < _instance->_dq.size(); i++) {
+    //     std::cout << _instance->_dq[i] << ' ';
+    // } std::cout << std::endl;
+
+    bool wrong_flag = (sorted_vec.size() != _instance->_vec.size() || sorted_vec.size() != _instance->_dq.size());
+    for (size_t i = 0; !wrong_flag && i < sorted_vec.size(); i++) {
         if ((sorted_vec[i] == _instance->_vec[i]) && (sorted_vec[i] == _instance->_dq[i]))
             continue;
-        assert(false);
+        wrong_flag = true;
     }
+    assert(wrong_flag == false);
 }
 
 void PmergeMe::_insert_vec(std::vector<Elem> &origin_vec, std::vector<Elem> &child_vec)
@@ -109,23 +121,21 @@ void PmergeMe::_insert_vec(std::vector<Elem> &origin_vec, std::vector<Elem> &chi
     bool over_flag = false;
     size_t idx;
     for (int i = 1; !over_flag; i++) {
-        if (Jacobsthal[i] - 1 < chain_vec.size() - 1)
+        if (Jacobsthal[i] < chain_vec.size())
             idx = Jacobsthal[i] - 1;
         else {
             idx = chain_vec.size() - 1;
             over_flag = true;
         }
-        std::vector<Elem>::iterator en;
-        size_t nxt_idx = Jacobsthal[i - 1] + (over_flag ? 2 : 1);
-        if (nxt_idx >= origin_vec.size())
-            nxt_idx = origin_vec.size() - 1;
-        en = origin_vec.begin() + nxt_idx;
+
+        std::vector<Elem>::iterator end_iter = origin_vec.begin() + \
+            std::min(idx + Jacobsthal[i - 1], origin_vec.size());
 
         while (idx >= Jacobsthal[i - 1]) {
-            std::vector<Elem>::iterator it = std::upper_bound(origin_vec.begin(), en, chain_vec[idx]);
+            std::vector<Elem>::iterator it = \
+                std::upper_bound(origin_vec.begin(), end_iter, chain_vec[idx]);
             origin_vec.insert(it, chain_vec[idx]);
             --idx;
-            --en;
         }
     }
 }
@@ -171,17 +181,28 @@ void PmergeMe::_insert_dq(std::deque<Elem> &origin_dq, std::deque<Elem> &child_d
 
     bool over_flag = false;
     size_t idx;
+
     for (int i = 1; !over_flag; i++) {
-        if (Jacobsthal[i] < chain_dq.size() - 1)
-            idx = Jacobsthal[i];
+        if (Jacobsthal[i] < chain_dq.size())
+            idx = Jacobsthal[i] - 1;
         else {
             idx = chain_dq.size() - 1;
             over_flag = true;
         }
-        while (idx > Jacobsthal[i - 1]) {
-            std::deque<Elem>::iterator it = std::upper_bound(origin_dq.begin(), origin_dq.end(), chain_dq[idx]);
+
+        std::deque<Elem>::iterator end_iter = origin_dq.begin() + \
+            std::min(idx + Jacobsthal[i - 1], origin_dq.size());
+
+        int end_iter_location = end_iter - origin_dq.begin();
+        while (idx >= Jacobsthal[i - 1]) {
+            std::deque<Elem>::iterator it = \
+                std::upper_bound(origin_dq.begin(), end_iter, chain_dq[idx]);
             origin_dq.insert(it, chain_dq[idx]);
             --idx;
+
+            if (std::abs((end_iter - origin_dq.begin()) - end_iter_location) > 1)
+                end_iter = origin_dq.begin() + end_iter_location;
+            end_iter_location = end_iter - origin_dq.begin();
         }
     }
 }
