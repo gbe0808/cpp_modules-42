@@ -146,10 +146,9 @@ double BitcoinExchange::_get_actual_value(const std::string &date, double value)
     std::map<std::string, double>::iterator it;
 
     it = _instance->_data.upper_bound(date);
-    if (it == _instance->_data.end())
-        --it;
     if (it == _instance->_data.begin())
         throw "early accessor";
+    --it;
     return value * it->second;
 }
 
